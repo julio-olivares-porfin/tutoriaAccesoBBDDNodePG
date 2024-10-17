@@ -2,8 +2,8 @@ const { Pool } = require("pg");
 
 const pool = new Pool ({
   host: "localhost",
-  user: "postgres",
-  password: "1234",
+  user: "porfin",
+  password: "123456",
   database: "gestion_usuarios",
   allowExitOnIdle: true,
 
@@ -43,4 +43,19 @@ const obtenerUsuariosMayores = async () => {
   return result.rows;
  };
 
-module.exports = { agregarUsuario, obtenerUsuario, obtenerUsuariosMayores, obtenerUsuariosPais };
+ const modificarUsuario = async (nombre, id) => {
+  const consulta = "UPDATE usuarios SET nombre = $1 WHERE id = $2 RETURNING *";
+  const values = [nombre, id];
+  const result = await pool.query(consulta, values);
+
+  return result.rows;
+ };
+
+ const eliminarUsuario = async (id) => {
+  const consulta = "DELETE FROM usuarios WHERE id = $1";
+  const values = [id];
+  await pool.query(consulta, values);
+
+ };
+
+module.exports = { agregarUsuario, obtenerUsuario, obtenerUsuariosMayores, obtenerUsuariosPais, modificarUsuario, eliminarUsuario };

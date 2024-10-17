@@ -1,4 +1,4 @@
-const { obtenerUsuario, agregarUsuario, obtenerUsuariosMayores, obtenerUsuariosPais } = require("./consultas")
+const { obtenerUsuario, agregarUsuario, obtenerUsuariosMayores, obtenerUsuariosPais, modificarUsuario, eliminarUsuario } = require("./consultas")
 
 const express = require("express");
 
@@ -29,6 +29,20 @@ app.get ("/usuarios/:pais", async (req, res) => {
   const { pais } = req.params
   const usuarios = await obtenerUsuariosPais(pais)
   res.json(usuarios)
+});
+
+app.put ("/usuarios/:id", async (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.query;
+  //  const { nombre } = req.body;
+  await modificarUsuario(nombre, id);
+  res.send("usuario modificado con éxito");
+});
+
+app.delete ("/usuarios/:id", async (req, res) => {
+  const { id } = req.params;
+  await eliminarUsuario(id);
+  res.send("usuario eliminado con éxito");
 });
 
 
